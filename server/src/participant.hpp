@@ -19,6 +19,7 @@ class Participant : public std::enable_shared_from_this<Participant>
     [[nodiscard]] const std::string &getNickname() const;
 
     void sendNewMemberJoined(const std::string &newMemberNickname);
+    void sendMessage(const std::string &msg);
 
   private:
     std::string nickname;

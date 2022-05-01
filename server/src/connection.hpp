@@ -30,7 +30,7 @@ class Connection : public std::enable_shared_from_this<Connection>
 
     void read();
 
-    void parsePacket(NetworkMessage &msg, uint16_t length);
+    void parsePacket(NetworkMessage msg, uint16_t length);
 };
 
 #endif // SERVER_CONNECTION_HPP

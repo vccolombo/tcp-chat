@@ -29,7 +29,7 @@ void Connection::read()
         });
 }
 
-void Connection::parsePacket(NetworkMessage &msg, uint16_t length)
+void Connection::parsePacket(NetworkMessage msg, uint16_t length)
 {
     auto command = msg.getByte();
 
@@ -38,6 +38,9 @@ void Connection::parsePacket(NetworkMessage &msg, uint16_t length)
     case 0x01:
         participant->setNickname(msg.getString());
         channel->addToChannel(participant);
+        break;
+    case 0x02:
+        channel->sendMessage(msg.getString());
         break;
     default:
         std::cout << "Unknown command!\n";

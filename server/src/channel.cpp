@@ -9,3 +9,11 @@ void Channel::addToChannel(std::shared_ptr<Participant> newParticipant)
         member->sendNewMemberJoined(newParticipant->getNickname());
     }
 }
+
+void Channel::sendMessage(const std::string &msg)
+{
+    for (const auto &member : members)
+    {
+        member->sendMessage(msg);
+    }
+}

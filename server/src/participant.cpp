@@ -24,6 +24,16 @@ void Participant::sendNewMemberJoined(const std::string &newMemberNickname)
     innerSend(msg);
 }
 
+void Participant::sendMessage(const std::string &s)
+{
+    std::cout << nickname << ": sending msg '" << s << "'\n";
+
+    NetworkMessage msg;
+    msg.add<uint8_t>(0x03);
+    msg.addString(s);
+    innerSend(msg);
+}
+
 void Participant::innerSend(NetworkMessage &msg)
 {
     auto self(shared_from_this());
