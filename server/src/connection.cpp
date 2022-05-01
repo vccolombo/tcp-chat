@@ -19,16 +19,18 @@ void Connection::read()
         boost::asio::buffer(msg.getBuffer(), NETWORKMESSAGE_MAXSIZE),
         [this, self](boost::system::error_code ec, std::size_t length)
         {
+            std::cout << "Received new packet" << std::endl;
             if (!ec)
             {
                 parsePacket(msg, length);
             }
+
+            read();
         });
 }
 
 void Connection::parsePacket(NetworkMessage &msg, uint16_t length)
 {
-    std::cout << "Received new packet" << std::endl;
     auto command = msg.getByte();
 
     switch (command)
