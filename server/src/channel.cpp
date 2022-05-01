@@ -10,10 +10,10 @@ void Channel::addToChannel(std::shared_ptr<Participant> newParticipant)
     }
 }
 
-void Channel::sendMessage(const std::string &msg)
+void Channel::sendMessage(const std::string &from, const std::string &msg)
 {
     for (const auto &member : members)
     {
-        member->sendMessage(msg);
+        member->sendMessage(from, msg);
     }
 }

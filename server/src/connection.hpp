@@ -17,7 +17,7 @@ class Connection : public std::enable_shared_from_this<Connection>
   public:
     explicit Connection(tcp::socket socket, std::shared_ptr<Channel> channel)
         : participant(std::make_shared<Participant>(std::move(socket))),
-          msg(NETWORKMESSAGE_MAXSIZE), channel(std::move(channel))
+          channel(std::move(channel))
     {
     }
 

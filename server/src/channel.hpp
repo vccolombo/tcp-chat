@@ -12,7 +12,7 @@ class Channel
     Channel() = default;
 
     void addToChannel(std::shared_ptr<Participant> newParticipant);
-    void sendMessage(const std::string &msg);
+    void sendMessage(const std::string &from, const std::string &msg);
 
   private:
     std::list<std::shared_ptr<Participant>> members;
