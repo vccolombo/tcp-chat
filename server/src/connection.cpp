@@ -43,17 +43,3 @@ void Connection::parsePacket(NetworkMessage &msg, uint16_t length)
         std::cout << "Unknown command!\n";
     }
 }
-
-void Connection::write(std::size_t length)
-{
-    auto self(shared_from_this());
-    boost::asio::async_write(
-        participant->socket, boost::asio::buffer(msg.getBuffer(), length),
-        [this, self](boost::system::error_code ec, std::size_t)
-        {
-            if (!ec)
-            {
-                read();
-            }
-        });
-}
