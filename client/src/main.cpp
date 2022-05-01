@@ -9,6 +9,33 @@
 
 using boost::asio::ip::tcp;
 
+class Protocol
+{
+  public:
+    static void parsePacket(NetworkMessage msg);
+};
+
+void Protocol::parsePacket(NetworkMessage msg)
+{
+    std::string nickname, text;
+
+    auto command = msg.get<uint8_t>();
+    switch (command)
+    {
+    case 0x03:
+        nickname = msg.getString();
+        text = msg.getString();
+        std::cout << nickname << ": " << text << std::endl;
+        break;
+    case 0x04:
+        nickname = msg.getString();
+        std::cout << nickname << " has entered the chat" << std::endl;
+        break;
+
+    default:
+        break;
+    }
+}
 class Client
 {
   public:
@@ -23,6 +50,8 @@ class Client
     boost::asio::io_context io_context;
     tcp::resolver resolver;
     tcp::socket socket;
+
+    void loopRead();
 };
 
 Client::Client() : resolver(io_context), socket(io_context) {}
@@ -36,18 +65,23 @@ void Client::connect(const std::string &host, const std::string &port)
 void Client::start()
 {
     io_context.run();
-
-    char data[NETWORKMESSAGE_MAXSIZE];
-    while (true)
-    {
-        socket.read_some(boost::asio::buffer(data, NETWORKMESSAGE_MAXSIZE));
-        std::cout << "read\n";
-    }
+    loopRead();
 }
 
 void Client::send(const NetworkMessage &msg)
 {
     socket.send(boost::asio::buffer(msg.getBuffer(), msg.getLength()));
+}
+
+void Client::loopRead()
+{
+    NetworkMessage msg;
+    while (true)
+    {
+        socket.read_some(
+            boost::asio::buffer(msg.getBuffer(), NETWORKMESSAGE_MAXSIZE));
+        Protocol::parsePacket(msg);
+    }
 }
 
 int main(int argc, char *argv[])
@@ -68,15 +102,14 @@ int main(int argc, char *argv[])
         msg.addString(nickname);
         client.send(msg);
 
-        // char line[NETWORKMESSAGE_MAXSIZE + 2];
-        // while (std::cin.getline(line, NETWORKMESSAGE_MAXSIZE + 1))
-        // {
-        //     // NetworkMessage msg;
-        //     // msg.body_length(std::strlen(line));
-        //     // std::memcpy(msg.body(), line, msg.body_length());
-        //     // msg.encode_header();
-        //     // c.write(msg);
-        // }
+        std::string s;
+        while (std::getline(std::cin, s))
+        {
+            NetworkMessage msg;
+            msg.add<uint8_t>(0x02);
+            msg.addString(s);
+            client.send(msg);
+        }
 
         t.join();
     }
