@@ -11,7 +11,7 @@ using boost::asio::ip::tcp;
 
 class Protocol
 {
-  public:
+   public:
     static void parsePacket(NetworkMessage msg);
 };
 
@@ -22,23 +22,23 @@ void Protocol::parsePacket(NetworkMessage msg)
     auto command = msg.get<uint8_t>();
     switch (command)
     {
-    case 0x03:
-        nickname = msg.getString();
-        text = msg.getString();
-        std::cout << nickname << ": " << text << std::endl;
-        break;
-    case 0x04:
-        nickname = msg.getString();
-        std::cout << nickname << " has entered the chat" << std::endl;
-        break;
+        case 0x03:
+            nickname = msg.getString();
+            text = msg.getString();
+            std::cout << nickname << ": " << text << std::endl;
+            break;
+        case 0x04:
+            nickname = msg.getString();
+            std::cout << nickname << " has entered the chat" << std::endl;
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 }
 class Client
 {
-  public:
+   public:
     Client();
 
     void connect(const std::string &host, const std::string &port);
@@ -46,7 +46,7 @@ class Client
 
     void send(const NetworkMessage &msg);
 
-  private:
+   private:
     boost::asio::io_context io_context;
     tcp::resolver resolver;
     tcp::socket socket;
