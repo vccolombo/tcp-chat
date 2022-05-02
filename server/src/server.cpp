@@ -1,4 +1,5 @@
 #include "server.hpp"
+
 #include "connection.hpp"
 
 void Server::start()

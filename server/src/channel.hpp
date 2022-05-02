@@ -1,21 +1,22 @@
 #ifndef SERVER_CHANNEL_HPP
 #define SERVER_CHANNEL_HPP
 
-#include "participant.hpp"
 #include <list>
 #include <memory>
 #include <string>
 
+#include "participant.hpp"
+
 class Channel
 {
-  public:
+   public:
     Channel() = default;
 
     void addToChannel(std::shared_ptr<Participant> newParticipant);
     void sendMessage(const std::string &from, const std::string &msg);
 
-  private:
+   private:
     std::list<std::shared_ptr<Participant>> members;
 };
 
-#endif // SERVER_CHANNEL_HPP
+#endif  // SERVER_CHANNEL_HPP

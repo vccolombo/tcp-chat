@@ -7,7 +7,7 @@
 
 class NetworkMessage
 {
-  public:
+   public:
     explicit NetworkMessage(uint16_t size);
     NetworkMessage();
     ~NetworkMessage();
@@ -17,7 +17,8 @@ class NetworkMessage
     uint8_t getByte();
     std::string getString();
 
-    template <typename T> T get()
+    template <typename T>
+    T get()
     {
         T v;
         memcpy(&v, buffer + position, sizeof(T));
@@ -27,7 +28,8 @@ class NetworkMessage
 
     void addString(const std::string &s);
 
-    template <typename T> void add(T v)
+    template <typename T>
+    void add(T v)
     {
         memcpy(buffer + position, &v, sizeof(T));
         position += sizeof(T);
@@ -35,9 +37,9 @@ class NetworkMessage
 
     uint16_t getLength() const;
 
-  private:
+   private:
     uint16_t position = 0;
     uint8_t *buffer;
 };
 
-#endif // SERVER_NETWORKMESSAGE_HPP
+#endif  // SERVER_NETWORKMESSAGE_HPP

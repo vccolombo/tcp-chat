@@ -11,9 +11,10 @@ using boost::asio::ip::tcp;
 
 class Server
 {
-  public:
+   public:
     explicit Server(uint16_t port)
-        : port(port), acceptor(io_context, tcp::endpoint(tcp::v4(), port)),
+        : port(port),
+          acceptor(io_context, tcp::endpoint(tcp::v4(), port)),
           channel(std::make_shared<Channel>())
     {
         accept();
@@ -21,7 +22,7 @@ class Server
 
     void start();
 
-  private:
+   private:
     [[maybe_unused]] uint16_t port;
     boost::asio::io_context io_context;
     tcp::acceptor acceptor;
@@ -30,4 +31,4 @@ class Server
     void accept();
 };
 
-#endif // SERVER_SERVER_HPP
+#endif  // SERVER_SERVER_HPP

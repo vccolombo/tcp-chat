@@ -35,14 +35,14 @@ void Connection::parsePacket(NetworkMessage msg, uint16_t length)
 
     switch (command)
     {
-    case 0x01:
-        participant->setNickname(msg.getString());
-        channel->addToChannel(participant);
-        break;
-    case 0x02:
-        channel->sendMessage(participant->getNickname(), msg.getString());
-        break;
-    default:
-        std::cout << "Unknown command!\n";
+        case 0x01:
+            participant->setNickname(msg.getString());
+            channel->addToChannel(participant);
+            break;
+        case 0x02:
+            channel->sendMessage(participant->getNickname(), msg.getString());
+            break;
+        default:
+            std::cout << "Unknown command!\n";
     }
 }

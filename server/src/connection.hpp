@@ -14,7 +14,7 @@ using boost::asio::ip::tcp;
 
 class Connection : public std::enable_shared_from_this<Connection>
 {
-  public:
+   public:
     explicit Connection(tcp::socket socket, std::shared_ptr<Channel> channel)
         : participant(std::make_shared<Participant>(std::move(socket))),
           channel(std::move(channel))
@@ -23,7 +23,7 @@ class Connection : public std::enable_shared_from_this<Connection>
 
     void start();
 
-  private:
+   private:
     std::shared_ptr<Participant> participant;
     NetworkMessage msg;
     std::shared_ptr<Channel> channel;
@@ -33,4 +33,4 @@ class Connection : public std::enable_shared_from_this<Connection>
     void parsePacket(NetworkMessage msg, uint16_t length);
 };
 
-#endif // SERVER_CONNECTION_HPP
+#endif  // SERVER_CONNECTION_HPP

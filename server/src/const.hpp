@@ -5,4 +5,4 @@
 
 static constexpr uint16_t NETWORKMESSAGE_MAXSIZE = 4096;
 
-#endif // SERVER_CONST_HPP
+#endif  // SERVER_CONST_HPP
