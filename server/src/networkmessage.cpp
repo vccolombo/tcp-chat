@@ -1,6 +1,6 @@
-#include "networkmessage.hpp"
+#include "networkmessage.h"
 
-#include "const.hpp"
+#include "const.h"
 
 NetworkMessage::NetworkMessage(uint16_t size)
 {

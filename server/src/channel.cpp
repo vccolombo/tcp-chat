@@ -1,4 +1,4 @@
-#include "channel.hpp"
+#include "channel.h"
 
 void Channel::addToChannel(std::shared_ptr<Participant> newParticipant)
 {

@@ -5,10 +5,10 @@
 #include <memory>
 #include <utility>
 
-#include "channel.hpp"
-#include "const.hpp"
-#include "networkmessage.hpp"
-#include "participant.hpp"
+#include "channel.h"
+#include "const.h"
+#include "networkmessage.h"
+#include "participant.h"
 
 using boost::asio::ip::tcp;
 

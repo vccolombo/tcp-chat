@@ -1,9 +1,9 @@
-#include "connection.hpp"
+#include "connection.h"
 
 #include <boost/asio.hpp>
 #include <iostream>
 
-#include "const.hpp"
+#include "const.h"
 
 void Connection::start()
 {

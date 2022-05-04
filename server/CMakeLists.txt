@@ -6,4 +6,4 @@ set(CMAKE_CXX_STANDARD 17)
 include_directories(src)
 
 add_executable(server
-        src/main.cpp src/server.cpp src/server.hpp src/connection.cpp src/connection.hpp src/networkmessage.cpp src/networkmessage.hpp src/const.hpp src/channel.cpp src/channel.hpp src/participant.cpp src/participant.hpp)
+        src/main.cpp src/server.cpp src/server.h src/connection.cpp src/connection.h src/networkmessage.cpp src/networkmessage.h src/const.h src/channel.cpp src/channel.h src/participant.cpp src/participant.h)

@@ -5,7 +5,7 @@
 #include <memory>
 #include <string>
 
-#include "participant.hpp"
+#include "participant.h"
 
 class Channel
 {

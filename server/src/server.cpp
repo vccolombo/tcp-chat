@@ -1,6 +1,6 @@
-#include "server.hpp"
+#include "server.h"
 
-#include "connection.hpp"
+#include "connection.h"
 
 void Server::start()
 {

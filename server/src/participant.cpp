@@ -1,4 +1,4 @@
-#include "participant.hpp"
+#include "participant.h"
 
 #include <memory>
 #include <utility>

@@ -2,13 +2,13 @@
 #include <exception>
 #include <iostream>
 
-#include "server.hpp"
+#include "server.h"
 
-int main()
+int main(int argc, char *argv[])
 {
     try
     {
-        uint16_t port = 1338;
+        uint16_t port = std::atoi(argv[1]);
         Server server(port);
         server.start();
     }
