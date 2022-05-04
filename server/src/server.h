@@ -12,18 +12,14 @@ using boost::asio::ip::tcp;
 class Server
 {
    public:
-    explicit Server(uint16_t port)
-        : acceptor(io_context, tcp::endpoint(tcp::v4(), port)),
-          channel(std::make_shared<Channel>())
-    {
-        accept();
-    }
+    explicit Server() : channel(std::make_shared<Channel>()) {}
 
+    void open(uint16_t port);
     void start();
 
    private:
     boost::asio::io_context io_context;
-    tcp::acceptor acceptor;
+    std::unique_ptr<tcp::acceptor> acceptor;
     std::shared_ptr<Channel> channel;
 
     void accept();

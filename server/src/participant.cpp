@@ -38,12 +38,7 @@ void Participant::sendMessage(const std::string &from, const std::string &s)
 void Participant::innerSend(NetworkMessage &msg)
 {
     auto self(shared_from_this());
-    boost::asio::async_write(
-        socket, boost::asio::buffer(msg.getBuffer(), msg.getLength()),
-        [this, self](boost::system::error_code ec, std::size_t)
-        {
-            if (!ec)
-            {
-            }
-        });
+    boost::asio::async_write(socket,
+        boost::asio::buffer(msg.getBuffer(), msg.getLength()),
+        [this, self](boost::system::error_code ec, std::size_t) {});
 }

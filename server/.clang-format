@@ -7,3 +7,4 @@ AllowShortIfStatementsOnASingleLine: Never
 UseTab: Never
 BreakBeforeBraces: Allman
 AllowShortFunctionsOnASingleLine: Empty
+AlignAfterOpenBracket: DontAlign

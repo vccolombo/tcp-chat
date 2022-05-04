@@ -1,6 +1,15 @@
 #include "server.h"
 
+#include <memory>
+
 #include "connection.h"
+
+void Server::open(uint16_t port)
+{
+    acceptor = std::make_unique<tcp::acceptor>(
+        io_context, tcp::endpoint(tcp::v4(), port));
+    accept();
+}
 
 void Server::start()
 {
@@ -9,7 +18,13 @@ void Server::start()
 
 void Server::accept()
 {
-    acceptor.async_accept(
+    if (acceptor == nullptr)
+    {
+        // TODO: some error handling?
+        return;
+    }
+
+    acceptor->async_accept(
         [this](boost::system::error_code ec, tcp::socket socket)
         {
             if (!ec)
