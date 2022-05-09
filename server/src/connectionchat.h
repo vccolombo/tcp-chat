@@ -5,7 +5,7 @@
 
 #include "connection.h"
 
-class ConnectionChat : public Connection
+class ConnectionChat final : public Connection
 {
    public:
     explicit ConnectionChat(tcp::socket socket) : Connection(std::move(socket)) {}

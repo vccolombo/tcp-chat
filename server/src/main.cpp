@@ -2,7 +2,7 @@
 #include <iostream>
 #include <memory>
 
-#include "connectionchat.h"
+#include "connectionchatfactory.h"
 #include "server.h"
 
 int main(int argc, char *argv[])
@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
     try
     {
         uint16_t port = std::atoi(argv[1]);
-        Server<ConnectionChat> server;
+        Server server(std::make_unique<ConnectionChatFactory>());
         server.open(port);
         server.start();
     }
