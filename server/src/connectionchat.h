@@ -16,6 +16,7 @@ class ConnectionChat final : public Connection, public ChannelObserver
     void onData(uint8_t* data, uint16_t length) override;
 
     void onNewChannelMember(const std::string& nickname) override;
+    void onMessage(const std::string& from, const std::string& msg) override;
 
    private:
     // TODO: remove this from here

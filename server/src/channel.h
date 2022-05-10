@@ -9,11 +9,13 @@
 class Channel final : public ChannelSubject
 {
    public:
-    void enterChannel(std::shared_ptr<ChannelObserver> member, const std::string& nickname) override;
-    void exitChannel(std::shared_ptr<ChannelObserver> member) override;
+    void enterChannel(ChannelObserver* member, const std::string& nickname) override;
+    void exitChannel(ChannelObserver* member) override;
+
+    void sendMessage(ChannelObserver* member, const std::string& msg) override;
 
    private:
-    std::unordered_map<std::shared_ptr<ChannelObserver>, std::string> _members;
+    std::unordered_map<ChannelObserver*, std::string> _members;
 };
 
 #endif  // SERVER_CHANNEL_H
