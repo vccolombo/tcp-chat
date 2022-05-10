@@ -1,19 +1,28 @@
 #include "channel.h"
 
-void Channel::addToChannel(std::shared_ptr<Participant> newParticipant)
+void Channel::enterChannel(ChannelObserver* const member, const std::string& nickname)
 {
-    members.push_front(newParticipant);
+    _members.insert({member, nickname});
 
-    for (const auto &member : members)
+    for (const auto& observer : _members)
     {
-        member->sendNewMemberJoined(newParticipant->getNickname());
+        auto observer_ptr = observer.first;
+        observer_ptr->onNewChannelMember(nickname);
     }
 }
 
-void Channel::sendMessage(const std::string &from, const std::string &msg)
+void Channel::exitChannel(ChannelObserver* const member)
 {
-    for (const auto &member : members)
+    // TODO
+}
+
+void Channel::sendMessage(ChannelObserver* const member, const std::string& msg)
+{
+    auto nickname = _members.at(member);
+
+    for (const auto& other_members : _members)
     {
-        member->sendMessage(from, msg);
+        auto ptr = other_members.first;
+        ptr->onMessage(nickname, msg);
     }
 }

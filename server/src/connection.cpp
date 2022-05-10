@@ -1,12 +1,8 @@
 #include "connection.h"
 
-#include <boost/asio.hpp>
-#include <iostream>
-
-#include "const.h"
-
-void Connection::start()
+void Connection::accept()
 {
+    onAccept();
     read();
 }
 
@@ -14,35 +10,25 @@ void Connection::read()
 {
     auto self(shared_from_this());
 
+    auto data = new uint8_t[4096];
     // TODO: the message may not be read all in one call
-    participant->socket.async_read_some(
-        boost::asio::buffer(msg.getBuffer(), NETWORKMESSAGE_MAXSIZE),
-        [this, self](boost::system::error_code ec, std::size_t length)
+    _socket.async_read_some(boost::asio::buffer(data, 4096),
+        [this, self, data](boost::system::error_code ec, std::size_t length)
         {
-            std::cout << "Received new packet" << std::endl;
             if (!ec)
             {
-                parsePacket(msg, length);
+                onData(data, length);
             }
 
+            delete[] data;
             read();
         });
 }
 
-void Connection::parsePacket(NetworkMessage msg, uint16_t length)
+void Connection::write(uint8_t* const data, uint16_t length)
 {
-    auto command = msg.getByte();
+    auto self(shared_from_this());
 
-    switch (command)
-    {
-        case 0x01:
-            participant->setNickname(msg.getString());
-            channel->addToChannel(participant);
-            break;
-        case 0x02:
-            channel->sendMessage(participant->getNickname(), msg.getString());
-            break;
-        default:
-            std::cout << "Unknown command!\n";
-    }
+    boost::asio::async_write(_socket, boost::asio::buffer(data, length),
+        [this, self, data](boost::system::error_code ec, std::size_t) { delete[] data; });
 }

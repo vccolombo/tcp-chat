@@ -1,16 +1,22 @@
 #include <cstdint>
-#include <exception>
 #include <iostream>
+#include <memory>
 
+#include "connectionchatfactory.h"
 #include "server.h"
 
 int main(int argc, char *argv[])
 {
+    if (argc != 2)
+    {
+        std::cout << "Usage: " << argv[0] << " <port>" << std::endl;
+        return 0;
+    }
+
     try
     {
-        // TODO: check argv[1]
         uint16_t port = std::atoi(argv[1]);
-        Server server;
+        Server server(std::make_unique<ConnectionChatFactory>());
         server.open(port);
         server.start();
     }
@@ -18,6 +24,4 @@ int main(int argc, char *argv[])
     {
         std::cerr << "Exception: " << e.what() << "\n";
     }
-
-    return 0;
 }
