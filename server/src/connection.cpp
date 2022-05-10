@@ -24,3 +24,11 @@ void Connection::read()
             read();
         });
 }
+
+void Connection::write(uint8_t* const data, uint16_t length)
+{
+    auto self(shared_from_this());
+
+    boost::asio::async_write(_socket, boost::asio::buffer(data, length),
+        [this, self, data](boost::system::error_code ec, std::size_t) { delete[] data; });
+}
