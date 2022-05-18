@@ -1,5 +1,7 @@
 #include "networkmessage.hpp"
 
+#include <cstdint>
+
 #include "const.hpp"
 
 NetworkMessage::NetworkMessage(uint16_t size)
@@ -37,6 +39,11 @@ std::string NetworkMessage::getString()
 uint16_t NetworkMessage::getLength() const
 {
     return position;
+}
+
+void NetworkMessage::updateBodyLength()
+{
+    set<uint16_t>(position - 5, 0);
 }
 
 void NetworkMessage::addString(const std::string &s)

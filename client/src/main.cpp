@@ -17,19 +17,23 @@ class Protocol
 
 void Protocol::parsePacket(NetworkMessage msg)
 {
-    std::string nickname, text;
+    std::string channel, nickname, text;
 
     auto command = msg.get<uint8_t>();
     switch (command)
     {
         case 0x03:
+            channel = msg.getString();
             nickname = msg.getString();
             text = msg.getString();
-            std::cout << nickname << ": " << text << std::endl;
+            std::cout << channel << "> " << nickname << ": " << text
+                      << std::endl;
             break;
         case 0x04:
+            channel = msg.getString();
             nickname = msg.getString();
-            std::cout << nickname << " has entered the chat" << std::endl;
+            std::cout << channel << "> " << nickname << " has entered the chat"
+                      << std::endl;
             break;
 
         default:
@@ -99,7 +103,9 @@ int main(int argc, char *argv[])
 
         NetworkMessage msg;
         msg.add<uint8_t>(0x01);
+        msg.addString("default");
         msg.addString(nickname);
+        msg.updateBodyLength();
         client.send(msg);
 
         std::string s;
@@ -107,7 +113,9 @@ int main(int argc, char *argv[])
         {
             NetworkMessage msg;
             msg.add<uint8_t>(0x02);
+            msg.addString("default");
             msg.addString(s);
+            msg.updateBodyLength();
             client.send(msg);
         }
 

@@ -31,13 +31,20 @@ class NetworkMessage
     template <typename T>
     void add(T v)
     {
-        memcpy(buffer + position, &v, sizeof(T));
+        set(v, position);
         position += sizeof(T);
     }
 
     uint16_t getLength() const;
+    void updateBodyLength();
 
    private:
+    template <typename T>
+    void set(T v, uint16_t offset)
+    {
+        memcpy(buffer + offset, &v, sizeof(T));
+    }
+
     uint16_t position = 0;
     uint8_t *buffer;
 };
