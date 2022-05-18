@@ -1,26 +1,35 @@
-#ifndef SERVER_CONNECTION_H
-#define SERVER_CONNECTION_H
+#pragma once
 
 #include <boost/asio.hpp>
-#include <cstdint>
 #include <memory>
+
+#include "channelmanager.h"
+#include "channelmember.h"
+#include "networkmessage.h"
 
 using boost::asio::ip::tcp;
 
-class Connection : public std::enable_shared_from_this<Connection>
+class Connection final : public std::enable_shared_from_this<Connection>, public ChannelMember
 {
    public:
-    explicit Connection(tcp::socket socket) : _socket(std::move(socket)) {}
+    Connection(tcp::socket socket, ChannelManager& cm);
 
     void accept();
-    void read();
-    void write(uint8_t* data, uint16_t length);
 
-    virtual void onAccept() {}
-    virtual void onData(uint8_t* const data, uint16_t length) {}
+    void on_new_channel_member(const std::string& channel_name, const std::string& member_nickname) override;
+    void on_channel_message(
+        const std::string& channel_name, const std::string& sender_nickname, const std::string& text) override;
 
    private:
-    tcp::socket _socket;
-};
+    void read_head();
+    void read_body();
+    void parse_msg();
+    void execute_command_join();
+    void execute_command_recv_msg();
+    void send();
 
-#endif  // SERVER_CONNECTION_H
+    tcp::socket socket_;
+    ChannelManager& cm_;
+    std::set<std::shared_ptr<Channel>> channels_;
+    NetworkMessage msg_;
+};

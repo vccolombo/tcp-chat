@@ -1,32 +1,22 @@
 #include "server.h"
 
-void Server::open(uint16_t port)
-{
-    _acceptor = std::make_unique<tcp::acceptor>(
-        _io_context, tcp::endpoint(tcp::v4(), port));
-    accept();
-}
+#include <memory>
 
-void Server::start()
+#include "connection.h"
+
+Server::Server(boost::asio::io_context& io_context, tcp::endpoint& endpoint) : acceptor_(io_context, endpoint)
 {
-    _io_context.run();
+    cm_.create("default");
 }
 
 void Server::accept()
 {
-    if (_acceptor == nullptr)
-    {
-        // TODO: some error handling?
-        return;
-    }
-
-    _acceptor->async_accept(
+    acceptor_.async_accept(
         [this](boost::system::error_code ec, tcp::socket socket)
         {
             if (!ec)
             {
-                _connection_factory->createConnection(std::move(socket))
-                    ->accept();
+                std::make_shared<Connection>(std::move(socket), cm_)->accept();
             }
 
             accept();

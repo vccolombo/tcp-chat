@@ -1,29 +1,19 @@
-#ifndef SERVER_SERVER_H
-#define SERVER_SERVER_H
+#pragma once
 
 #include <boost/asio.hpp>
-#include <cstdint>
-#include <memory>
 
-#include "connectionfactory.h"
+#include "channelmanager.h"
 
 using boost::asio::ip::tcp;
 
 class Server
 {
    public:
-    explicit Server(std::unique_ptr<ConnectionFactory> connection_factory)
-        : _connection_factory(std::move(connection_factory)){};
-
-    void open(uint16_t port);
-    void start();
-
-   private:
-    boost::asio::io_context _io_context;
-    std::unique_ptr<tcp::acceptor> _acceptor;
-    std::unique_ptr<ConnectionFactory> _connection_factory;
+    Server(boost::asio::io_context& io_context, tcp::endpoint& endpoint);
 
     void accept();
-};
 
-#endif  // SERVER_SERVER_H
+   private:
+    tcp::acceptor acceptor_;
+    ChannelManager cm_;
+};

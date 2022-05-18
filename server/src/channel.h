@@ -1,21 +1,21 @@
-#ifndef SERVER_CHANNEL_H
-#define SERVER_CHANNEL_H
+#pragma once
 
+#include <memory>
+#include <set>
 #include <string>
 #include <unordered_map>
 
-#include "channelsubject.h"
+#include "channelmember.h"
 
-class Channel final : public ChannelSubject
+class Channel
 {
    public:
-    void enterChannel(ChannelObserver* member, const std::string& nickname) override;
-    void exitChannel(ChannelObserver* member) override;
+    Channel(const std::string& name);
 
-    void sendMessage(ChannelObserver* member, const std::string& msg) override;
+    void join(std::shared_ptr<ChannelMember> member_ptr, const std::string& nickname);
+    void send_message(std::shared_ptr<ChannelMember> member_ptr, const std::string& text);
 
    private:
-    std::unordered_map<ChannelObserver*, std::string> _members;
+    std::string name_;
+    std::unordered_map<std::shared_ptr<ChannelMember>, std::string> members_;
 };
-
-#endif  // SERVER_CHANNEL_H
